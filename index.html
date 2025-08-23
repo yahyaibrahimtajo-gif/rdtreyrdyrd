@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Animated Cube</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #1a2a6c, #b21f1f, #fdbb2d);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow-x: hidden;
+            color: white;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+        }
+        
+        .cube-container {
+            width: 200px;
+            height: 200px;
+            perspective: 800px;
+            margin: 40px auto;
+        }
+        
+        .cube {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transform: rotateX(-20deg) rotateY(-20deg);
+            animation: rotate 15s infinite linear;
+            transition: transform 0.5s;
+        }
+        
+        .cube:hover {
+            animation-play-state: paused;
+        }
+        
+        .cube-face {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            background: rgba(255, 255, 255, 0.8);
+            border: 2px solid rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            backface-visibility: visible;
+            transition: all 0.3s;
+        }
+        
+        .cube-face:hover {
+            background: rgba(255, 255, 255, 0.95);
+            transform: translateZ(5px);
+        }
+        
+        .front {
+            transform: translateZ(100px);
+            background: rgba(255, 107, 107, 0.85);
+        }
+        
+        .back {
+            transform: rotateY(180deg) translateZ(100px);
+            background: rgba(77, 171, 247, 0.85);
+        }
+        
+        .right {
+            transform: rotateY(90deg) translateZ(100px);
+            background: rgba(120, 224, 143, 0.85);
+        }
+        
+        .left {
+            transform: rotateY(-90deg) translateZ(100px);
+            background: rgba(224, 120, 221, 0.85);
+        }
+        
+        .top {
+            transform: rotateX(90deg) translateZ(100px);
+            background: rgba(255, 206, 106, 0.85);
+        }
+        
+        .bottom {
+            transform: rotateX(-90deg) translateZ(100px);
+            background: rgba(106, 176, 255, 0.85);
+        }
+        
+        @keyframes rotate {
+            from {
+                transform: rotateX(0) rotateY(0) rotateZ(0);
+            }
+            to {
+                transform: rotateX(360deg) rotateY(360deg) rotateZ(360deg);
+            }
+        }
+        
+        .controls {
+            display: flex;
+            gap: 15px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        button {
+            padding: 12px 25px;
+            background: rgba(255, 255, 255, 0.2);
+            border: 2px solid white;
+            color: white;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+        }
+        
+        .speed-control {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin: 20px 0;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px 25px;
+            border-radius: 50px;
+        }
+        
+        input[type="range"] {
+            width: 200px;
+        }
+        
+        .info {
+            max-width: 600px;
+            text-align: center;
+            margin-top: 40px;
+            line-height: 1.6;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+        }
+        
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+        
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+            
+            .cube-container {
+                width: 150px;
+                height: 150px;
+            }
+            
+            .cube-face {
+                width: 150px;
+                height: 150px;
+                font-size: 18px;
+            }
+            
+            .front {
+                transform: translateZ(75px);
+            }
+            
+            .back {
+                transform: rotateY(180deg) translateZ(75px);
+            }
+            
+            .right {
+                transform: rotateY(90deg) translateZ(75px);
+            }
+            
+            .left {
+                transform: rotateY(-90deg) translateZ(75px);
+            }
+            
+            .top {
+                transform: rotateX(90deg) translateZ(75px);
+            }
+            
+            .bottom {
+                transform: rotateX(-90deg) translateZ(75px);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>3D Animated Cube</h1>
+        <p class="subtitle">Interact with this responsive 3D cube. Hover to pause, use controls to change animation.</p>
+    </header>
+    
+    <div class="cube-container">
+        <div class="cube">
+            <div class="cube-face front">Front</div>
+            <div class="cube-face back">Back</div>
+            <div class="cube-face right">Right</div>
+            <div class="cube-face left">Left</div>
+            <div class="cube-face top">Top</div>
+            <div class="cube-face bottom">Bottom</div>
+        </div>
+    </div>
+    
+    <div class="controls">
+        <button id="pauseBtn">Pause</button>
+        <button id="resumeBtn">Resume</button>
+        <button id="reverseBtn">Reverse</button>
+    </div>
+    
+    <div class="speed-control">
+        <span>Speed:</span>
+        <input type="range" id="speedControl" min="1" max="20" value="10">
+    </div>
+    
+    <div class="info">
+        <h2>About this 3D Cube</h2>
+        <p>This is a pure CSS 3D cube with JavaScript controls. The cube is created using CSS 3D transforms and preserves 3D rendering.</p>
+        <p>Hover over the cube to pause the animation. Use the buttons to control rotation and the slider to adjust speed.</p>
+    </div>
+    
+    <footer>
+        <p>Created with CSS 3D Transforms & JavaScript | © 2023</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const cube = document.querySelector('.cube');
+            const pauseBtn = document.getElementById('pauseBtn');
+            const resumeBtn = document.getElementById('resumeBtn');
+            const reverseBtn = document.getElementById('reverseBtn');
+            const speedControl = document.getElementById('speedControl');
+            
+            let isPaused = false;
+            let isReversed = false;
+            let animationSpeed = 15;
+            
+            // Set initial animation
+            updateAnimation();
+            
+            // Pause animation
+            pauseBtn.addEventListener('click', function() {
+                cube.style.animationPlayState = 'paused';
+                isPaused = true;
+            });
+            
+            // Resume animation
+            resumeBtn.addEventListener('click', function() {
+                cube.style.animationPlayState = 'running';
+                isPaused = false;
+            });
+            
+            // Reverse animation
+            reverseBtn.addEventListener('click', function() {
+                isReversed = !isReversed;
+                updateAnimation();
+            });
+            
+            // Speed control
+            speedControl.addEventListener('input', function() {
+                animationSpeed = 21 - this.value; // Invert value so that slider right = faster
+                updateAnimation();
+            });
+            
+            // Update animation based on current settings
+            function updateAnimation() {
+                const direction = isReversed ? 'reverse' : 'normal';
+                cube.style.animation = `rotate ${animationSpeed}s infinite linear ${direction}`;
+                
+                if (isPaused) {
+                    cube.style.animationPlayState = 'paused';
+                }
+            }
+            
+            // Add mouse interaction for dragging
+            let isMouseDown = false;
+            let startX, startY;
+            let rotateX = -20, rotateY = -20;
+            
+            cube.addEventListener('mousedown', function(e) {
+                isMouseDown = true;
+                startX = e.clientX;
+                startY = e.clientY;
+                cube.style.animationPlayState = 'paused';
+                e.preventDefault();
+            });
+            
+            document.addEventListener('mousemove', function(e) {
+                if (!isMouseDown) return;
+                
+                const deltaX = e.clientX - startX;
+                const deltaY = e.clientY - startY;
+                
+                rotateY += deltaX * 0.5;
+                rotateX += deltaY * 0.5;
+                
+                cube.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                
+                startX = e.clientX;
+                startY = e.clientY;
+            });
+            
+            document.addEventListener('mouseup', function() {
+                isMouseDown = false;
+            });
+            
+            // Add touch events for mobile devices
+            cube.addEventListener('touchstart', function(e) {
+                isMouseDown = true;
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+                cube.style.animationPlayState = 'paused';
+                e.preventDefault();
+            });
+            
+            document.addEventListener('touchmove', function(e) {
+                if (!isMouseDown) return;
+                
+                const deltaX = e.touches[0].clientX - startX;
+                const deltaY = e.touches[0].clientY - startY;
+                
+                rotateY += deltaX * 0.5;
+                rotateX += deltaY * 0.5;
+                
+                cube.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+                
+                startX = e.touches[0].clientX;
+                startY = e.touches[0].clientY;
+            });
+            
+            document.addEventListener('touchend', function() {
+                isMouseDown = false;
+            });
+        });
+    </script>
+</body>
+</html>
